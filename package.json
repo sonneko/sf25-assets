@@ -1,0 +1,8 @@
+{
+  "name": "sf25-assets",
+  "description": "SF25Webサイトのアセット管理用",
+  "main": "script/main.js",
+  "scripts": {
+    "build": "node script/main.js"
+  }
+}

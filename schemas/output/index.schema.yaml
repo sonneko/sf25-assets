@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "https://seikosf25.jp/schemas/output/index.schema.yaml"
+title: "Index Data"
+description: "検索インデックスや企画・ブログの概要など、フロントエンドの初期表示に必要な軽量データを集約したスキーマ。"
+type: "object"
+properties:
+  searchIndex:
+    type: "array"
+    description: "フロントエンドでの検索機能に使用されるインデックスデータの配列。"
+    items:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "企画やブログを一意に識別するID。"
+        keywords:
+          type: "array"
+          description: "検索対象となるキーワードの配列。"
+          items:
+            type: "string"
+  booths:
+    type: "array"
+    description: "企画の一覧データ。フロントエンドのリスト表示などに利用されます。"
+    items:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "企画のID。"
+        name:
+          type: "string"
+          description: "企画名。"
+        group:
+          type: "string"
+          description: "団体名。"
+        description:
+          type: "string"
+          description: "企画の簡単な紹介。"
+        locateId:
+          type: "string"
+          description: "企画場所のID。"
+        tag:
+          type: "array"
+          description: "企画のタグ。"
+          items:
+            type: "string"
+required:
+  - searchIndex
+  - booths

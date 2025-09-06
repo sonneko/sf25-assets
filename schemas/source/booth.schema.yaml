@@ -1,0 +1,136 @@
+# yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
+# JSON Schema for booth data.
+# This schema validates the structure and content of booth information files.
+
+$schema: "http://json-schema.org/draft-07/schema#"
+$id: "https://seikosf25.jp/schemas/source/booth.schema.yaml"
+title: "Booth"
+description: "schema for booth.yaml. This defines the structure for individual booth information files."
+type: "object"
+
+properties:
+  id:
+    type: "string"
+    description: "企画を一意に判別できるID。修飾子と団体名を表す文字列で構成されます。"
+    pattern: "^(class|grade|club|volu)-[a-zA-Z0-9-]+" # Ensures the ID follows the specified format
+  name:
+    type: "string"
+    description: "企画の名前（そのまま表示される）。"
+  group:
+    type: "string"
+    description: "団体名（そのまま表示される）。"
+  description:
+    type: "string"
+    description: "簡単な1行紹介（20〜40文字程度）。改行は禁止されます。"
+    minLength: 20
+    maxLength: 40
+  locateId:
+    type: "string"
+    description: "企画場所ID。特定の文字列リストに限定されます。"
+    # The enum is generated from the provided list in the documentation.
+    enum:
+      - "G"
+      - "G1"
+      - "G2"
+      - "G3"
+      - "G4"
+      - "G5"
+      - "G6"
+      - "G7"
+      - "G8"
+      - "G9"
+      - "G10"
+      - "G11"
+      - "G12"
+      - "G13"
+      - "G14"
+      - "G15"
+      - "G16"
+      - "G17"
+      - "G18"
+      - "G19"
+      - "G22"
+      - "dining"
+      - "hoken"
+      - "tosyo"
+      - "H1A"
+      - "H1C"
+      - "H1D"
+      - "H1E"
+      - "M1A"
+      - "M1B"
+      - "M1D"
+      - "catho"
+      - "AVRoom"
+      - "TechRoom"
+      - "juken"
+      - "info"
+      - "sp1"
+      - "H2A"
+      - "H2C"
+      - "H2E"
+      - "M2A"
+      - "M2B"
+      - "M2C_1"
+      - "M2D"
+      - "M2C_2"
+      - "ScienceLab"
+      - "BiologyLab"
+      - "SRNo3"
+      - "SRNo4"
+      - "H3A"
+      - "H3C"
+      - "H3D"
+      - "H3E"
+      - "M3A"
+      - "M3B"
+      - "M3D"
+      - "SF41"
+      - "SNo1"
+      - "SNo2"
+      - "Music"
+      - "Physics"
+      - "P1"
+      - "P2"
+  locate:
+    type: "string"
+    description: "企画場所名。`locateId`に対応する場所名です。"
+  tag:
+    type: "array"
+    description: "企画の属性を示すタグの配列。"
+    items:
+      type: "string"
+      # The enum is generated from the provided list in the documentation.
+      enum:
+        - "game"
+        - "exhibition"
+        - "food"
+        - "band"
+        - "cm"
+        - "free"
+        - "drink"
+        - "inside"
+        - "outside"
+        - "student"
+        - "big"
+        - "teacher"
+        - "club"
+        - "class"
+        - "voluntary"
+  keywords:
+    type: "array"
+    description: "検索インデックス作成のためのキーワードの配列。"
+    items:
+      type: "string"
+    uniqueItems: true # Prevents duplicate keywords in the array.
+    minItems: 1 # At least one keyword should be provided for search indexing.
+
+required:
+  - id
+  - name
+  - group
+  - description
+  - locateId
+  - locate
+  - tag
+  - keywords
