@@ -8,7 +8,5 @@
     "test": "vitest"
   },
   "devDependencies": {
-    "js-yaml": "^4.1.0",
-    "vitest": "^3.2.4"
   }
 }

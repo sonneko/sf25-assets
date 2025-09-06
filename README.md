@@ -15,14 +15,14 @@ SF25フロントエンドから直接アクセスできるデータセット。
   - `news`
     - `[news_id].yaml`: ニュースそれぞれのファイル
 - `script`: アセット生成のためのJavaScriptファイル
-  - `main.js`: エントリーポイント
-  - `search-index.js`: 検索インデックス生成
-  - `booth.js`: 企画情報用のアセット生成
-  - `blog.js`: ブログ用のアセット生成
-  - `timetable.js`: タイムテーブル用のアセット生成
-  - `news.js`: ニュース情報のアセット生成
-  - `cm.js`: CM動画管理（存在不明）
-  - `check.js`: 入出力のデータがスキーマに準拠しているか確認する
+  - `main.ts`: エントリーポイント
+  - `search-index.ts`: 検索インデックス生成
+  - `booth.ts`: 企画情報用のアセット生成
+  - `blog.ts`: ブログ用のアセット生成
+  - `timetable.ts`: タイムテーブル用のアセット生成
+  - `news.ts`: ニュース情報のアセット生成
+  - `cm.ts`: CM動画管理（存在不明）
+  - `check.ts`: 入出力のデータがスキーマに準拠しているか確認する
 - `schemas`: アセットのスキーマを置く場所。
   - `source`: ソース側のスキーマ
     - `booth.schema.yaml`: 企画情報のスキーマ
@@ -32,6 +32,7 @@ SF25フロントエンドから直接アクセスできるデータセット。
     - `index.schema.yaml`: 検索インデックスと小さいデータたち用のスキーマ
     - `timetable.schema.yaml`: タイムテーブル用の情報のスキーマ
     - `news.schema.yaml`: ニュース情報のスキーマ
+- `tests`: テスト
 - `README.md`: これ
 - `NOTES.md`: 人間が書くメモ
 - `LOGS.md`: 管理アプリによる自動ログ
@@ -51,6 +52,7 @@ SF25フロントエンドから直接アクセスできるデータセット。
   - `[blog_id].md`: 各々のブログのコンテンツ
 - `timetable.json`: タイムテーブル用の情報
 - `news.json`: ニュース用の情報
+- `docs`: 出力スキーマから自動生成したhtmlドキュメントをここに配置する
 
 ## CI/CD
 mainブランチにpushされると自動でGitHubActionで`npm install && npm run build`が実行されて、その結果出力された`out`ディレクトリの内容がGitHubPagesで静的に配信されます。
