@@ -2,7 +2,13 @@
   "name": "sf25-assets",
   "description": "SF25Webサイトのアセット管理用",
   "main": "script/main.js",
+  "type": "module",
   "scripts": {
-    "build": "node script/main.js"
+    "build": "node script/main.js",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "js-yaml": "^4.1.0",
+    "vitest": "^3.2.4"
   }
 }
