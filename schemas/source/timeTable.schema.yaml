@@ -19,10 +19,8 @@ properties:
           description: "イベントのタイトル。"
         start:
           type: "string"
-          format: "date-time"
         end:
           type: "string"
-          format: "date-time"
         boothId:
           type: "string"
           description: "関連する企画のID。"

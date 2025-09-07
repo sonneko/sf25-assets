@@ -23,6 +23,5 @@ properties:
         timestamp:
           type: "string"
           description: "落とし物が発見された日時。ISO 8601形式の文字列を期待します。"
-          format: "date-time"
 required:
   - lostItem

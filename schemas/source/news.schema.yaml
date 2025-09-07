@@ -17,7 +17,6 @@ properties:
   timestamp:
     type: "string"
     description: "ニュース記事が公開された日時。ISO 8601形式（YYYY-MM-DDTHH:mm:ssZ）の文字列を期待します。"
-    format: "date-time"
 required:
   - title
   - content

@@ -80,7 +80,6 @@ $ npm install github:sonneko/sf25-assets#lib
 
 **（`dist`ディレクトリ内に生成され、レポジトリ全体がライブラリとして`lib`ブランチに自動でcommitされる。）**
 
-- `index.js`: エントリーポイント
 - `source`: ソース側
   - `booth.d.ts`: 企画情報
   - `blog.d.ts`: ブログ情報

@@ -4,9 +4,17 @@
   "main": "script/main.js",
   "type": "module",
   "scripts": {
-    "build": "node script/main.js",
-    "test": "vitest"
+    "build": "tsc && node dist/main.js"
   },
-  "devDependencies": {
+  "dependencies": {
+    "@types/ajv": "^1.0.4",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^24.3.1",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "dompurify": "^3.2.6",
+    "js-yaml": "^4.1.0",
+    "marked": "^16.2.1",
+    "typescript": "^5.9.2"
   }
 }

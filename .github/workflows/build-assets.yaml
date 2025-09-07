@@ -22,10 +22,13 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Run script
-        run: node script/main.js
+      - name: Install dependencies
+        run: npm install
 
-      - name: Upload artifact
+      - name: Run script
+        run: npm run build
+
+      - name: Upload assets and docs artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: './out'
@@ -33,3 +36,26 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Prepare to publish to lib branch
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B lib
+
+      - name: Add build artifacts
+        run: |
+          rm -rf ./*
+          mv dist/* .
+          rm -rf out/ 
+          echo 'node_modules/' >> .gitignore
+          echo 'src/' >> .gitignore
+          echo 'package.json' >> .gitignore
+          echo 'package-lock.json' >> .gitignore
+          echo 'tsconfig.json' >> .gitignore
+
+      - name: Commit and push to lib branch
+        run: |
+          git add .
+          git commit -m "chore: build artifacts from main branch"
+          git push -f origin lib

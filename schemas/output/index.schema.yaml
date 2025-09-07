@@ -14,7 +14,6 @@ properties:
         timestamp:
           description: "配信日時"
           type: "string"
-          format: "date-time"
         title:
           description: "Newsのタイトル"
           type: "string"
@@ -39,7 +38,6 @@ properties:
         timestamp:
           description: "配信日時"
           type: "string"
-          format: "date-time"
         tags:
           description: "記事についているタグ"
           type: "string"
@@ -58,11 +56,9 @@ properties:
           description: "表示するイベント名"
         start:
           type: "string"
-          format: "date-time"
           description: "始まる時間"
         end:
           type: "string"
-          format: "date-time"
           description: "終わる時間"
   lostItems:
     type: "array"
