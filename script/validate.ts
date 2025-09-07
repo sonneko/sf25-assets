@@ -1,4 +1,4 @@
-import { getAllFilesInDirAsPath, readFileFromPath, validates, getFileExtension, removeFileExtension, parseAsYaml } from "./lib.js";
+import { getAllFilesInDirAsPath, readFileFromPath, validates, getFileExtension, removeFileExtension, parseAsYaml, assertFileExistence } from "./lib.js";
 import fs from "fs";
 
 export function validateSource() {
@@ -25,13 +25,7 @@ export function validateSource() {
 
             // Assert existence of corresponding Markdown file
             const mdPath = `src/booth/${baseName}.md`;
-            try {
-                fs.accessSync(mdPath);
-                console.log(`Found corresponding Markdown file: ${mdPath}`);
-            } catch (error) {
-                console.error(`Error: Missing Markdown file for src/booth/${path}: ${mdPath}`);
-                process.exit(1);
-            }
+            assertFileExistence(mdPath, `Missing Markdown file for src/booth/${path}`);
         }
     }
 
@@ -56,13 +50,7 @@ export function validateSource() {
 
             // Assert existence of corresponding Markdown file
             const mdPath = `src/blog/${baseName}.md`;
-            try {
-                fs.accessSync(mdPath);
-                console.log(`Found corresponding Markdown file: ${mdPath}`);
-            } catch (error) {
-                console.error(`Error: Missing Markdown file for src/blog/${path}: ${mdPath}`);
-                process.exit(1);
-            }
+            assertFileExistence(mdPath, `Missing Markdown file for src/blog/${path}`);
         }
     }
 
@@ -107,13 +95,7 @@ export function validateSource() {
 
             // Assert existence of corresponding WebP image file
             const webpPath = `src/lostItems/${baseName}.webp`;
-            try {
-                fs.accessSync(webpPath);
-                console.log(`Found corresponding WebP file: ${webpPath}`);
-            } catch (error) {
-                console.error(`Error: Missing WebP file for src/lostItems/${path}: ${webpPath}`);
-                process.exit(1);
-            }
+            assertFileExistence(webpPath, `Missing WebP file for src/lostItems/${path}`);
         }
     }
 
@@ -163,7 +145,35 @@ export function validateOutput() {
     }
     console.log(`Successfully validated out/booth.json`);
 
-    // TODO: Add checks for existence of generated HTML and WebP files in out/booths/ and out/blogs/
+    // Validate existence of generated HTML and WebP files for booths
+    const srcBoothPaths = getAllFilesInDirAsPath("src/booth");
+    for (const p of srcBoothPaths) {
+        const baseName = removeFileExtension(p);
+        const extension = getFileExtension(p);
+
+        if (extension === "md") {
+            const outputPath = `out/booths/${baseName}.html`;
+            assertFileExistence(outputPath, `Missing generated HTML file for booth: ${p}`);
+        } else if (extension === "webp") {
+            const outputPath = `out/booths/${p}`;
+            assertFileExistence(outputPath, `Missing copied WebP file for booth: ${p}`);
+        }
+    }
+
+    // Validate existence of generated HTML and WebP files for blogs
+    const srcBlogPaths = getAllFilesInDirAsPath("src/blog");
+    for (const p of srcBlogPaths) {
+        const baseName = removeFileExtension(p);
+        const extension = getFileExtension(p);
+
+        if (extension === "md") {
+            const outputPath = `out/blogs/${baseName}.html`;
+            assertFileExistence(outputPath, `Missing generated HTML file for blog: ${p}`);
+        } else if (extension === "webp") {
+            const outputPath = `out/blogs/${p}`;
+            assertFileExistence(outputPath, `Missing copied WebP file for blog: ${p}`);
+        }
+    }
 
     console.log("Output validation complete.");
 }

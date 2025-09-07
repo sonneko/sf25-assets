@@ -90,11 +90,20 @@ export function getAllFilesInDirAsPath(dirName: string): string[] {
 }
 
 export function getFileExtension(fileName: string): string {
-
     const parts = fileName.split(".");
     return parts[parts.length - 1];
 }
 
 export function removeFileExtension(fileName: string): string {
     return fileName.split('.').slice(0, -1).join('.');
+}
+
+export function assertFileExistence(filePath: string, errorMessage: string): void {
+    try {
+        fs.accessSync(filePath);
+        console.log(`Found corresponding file: ${filePath}`);
+    } catch (error) {
+        console.error(`Error: ${errorMessage}: ${filePath}`);
+        process.exit(1);
+    }
 }

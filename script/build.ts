@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { readFileFromPath, parseAsYaml, removeFileExtension, parseAsMd, getAllFilesInDirAsPath } from "./lib.js";
+import { readFileFromPath, parseAsYaml, removeFileExtension, parseAsMd, getAllFilesInDirAsPath, getFileExtension } from "./lib.js";
 
 function generateTsInterface(schemaName: string, schema: any, isRoot = true): string {
     let tsInterface = `export interface ${schemaName} ${isRoot ? '' : 'extends Record<string, unknown> '} {\n`;
@@ -179,6 +179,8 @@ export function buildAssets() {
 
     console.log("Assets built.");
 }
+
+export function buildTypeDeclarationFile() {
     console.log("Building TypeScript declaration files...");
 
     const schemasDir = "schemas";
