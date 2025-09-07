@@ -1,4 +1,5 @@
-import { getAllFilesInDirAsPath, readFileFromPath, validates, getFileExtension } from "./lib.js";
+import { getAllFilesInDirAsPath, readFileFromPath, validates, getFileExtension, removeFileExtension, parseAsYaml } from "./lib.js";
+import fs from "fs";
 
 export function validateSource() {
     console.log("Validating source files...");
@@ -82,6 +83,37 @@ export function validateSource() {
                 process.exit(1);
             }
             console.log(`Successfully validated src/news/${path}`);
+        }
+    }
+
+    // Validate lostItems source files
+    const lostItemPaths = getAllFilesInDirAsPath("src/lostItems");
+    for (const path of lostItemPaths) {
+        const extension = getFileExtension(path);
+        const baseName = removeFileExtension(path);
+
+        if (extension === "yaml") {
+            const fileContent = readFileFromPath("src/lostItems/" + path);
+            const parsedContent = parseAsYaml(fileContent);
+            
+            // Validate YAML file against schema
+            const isValid = validates.sourceLostItem(parsedContent);
+            if (!isValid) {
+                console.error(`Failed to validate src/lostItems/${path}:`);
+                console.error(validates.sourceLostItem.errors);
+                process.exit(1);
+            }
+            console.log(`Successfully validated src/lostItems/${path}`);
+
+            // Assert existence of corresponding WebP image file
+            const webpPath = `src/lostItems/${baseName}.webp`;
+            try {
+                fs.accessSync(webpPath);
+                console.log(`Found corresponding WebP file: ${webpPath}`);
+            } catch (error) {
+                console.error(`Error: Missing WebP file for src/lostItems/${path}: ${webpPath}`);
+                process.exit(1);
+            }
         }
     }
     console.log("Source validation complete.");
