@@ -141,5 +141,29 @@ export function validateSource() {
 }
 
 export function validateOutput() {
+    console.log("Validating output files...");
 
+    // Validate out/index.json
+    const indexContent = readFileFromPath("out/index.json");
+    const parsedIndex = JSON.parse(indexContent);
+    if (!validates.outputIndex(parsedIndex)) {
+        console.error(`Failed to validate out/index.json:`);
+        console.error(validates.outputIndex.errors);
+        process.exit(1);
+    }
+    console.log(`Successfully validated out/index.json`);
+
+    // Validate out/booth.json
+    const boothJsonContent = readFileFromPath("out/booth.json");
+    const parsedBoothJson = JSON.parse(boothJsonContent);
+    if (!validates.outputBooth(parsedBoothJson)) {
+        console.error(`Failed to validate out/booth.json:`);
+        console.error(validates.outputBooth.errors);
+        process.exit(1);
+    }
+    console.log(`Successfully validated out/booth.json`);
+
+    // TODO: Add checks for existence of generated HTML and WebP files in out/booths/ and out/blogs/
+
+    console.log("Output validation complete.");
 }
