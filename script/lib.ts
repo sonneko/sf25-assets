@@ -19,9 +19,6 @@ export const SCHEMA_PATH = {
 
 
 export function escapeHtml(target: string): string {
-    if (typeof target !== 'string') {
-        return target;
-    }
     return target.replace(/[&'`"<>]/g, (match: string) => {
         return {
             '&': '&amp;',
