@@ -116,6 +116,27 @@ export function validateSource() {
             }
         }
     }
+
+    // Validate src/timeTable.yaml
+    const timeTableContent = readFileFromPath("src/timeTable.yaml");
+    const parsedTimeTable = parseAsYaml(timeTableContent);
+    if (!validates.sourceTimeTable(parsedTimeTable)) {
+        console.error(`Failed to validate src/timeTable.yaml:`);
+        console.error(validates.sourceTimeTable.errors);
+        process.exit(1);
+    }
+    console.log(`Successfully validated src/timeTable.yaml`);
+
+    // Validate src/config.yaml
+    const configContent = readFileFromPath("src/config.yaml");
+    const parsedConfig = parseAsYaml(configContent);
+    if (!validates.sourceConfig(parsedConfig)) {
+        console.error(`Failed to validate src/config.yaml:`);
+        console.error(validates.sourceConfig.errors);
+        process.exit(1);
+    }
+    console.log(`Successfully validated src/config.yaml`);
+
     console.log("Source validation complete.");
 }
 
