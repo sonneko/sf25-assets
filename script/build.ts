@@ -155,6 +155,28 @@ export function buildAssets() {
         }
     }
 
+    // Generate individual blog pages and copy images
+    const outBlogsDir = path.join(outDir, "blogs");
+    fs.mkdirSync(outBlogsDir, { recursive: true });
+
+    for (const p of getAllFilesInDirAsPath("src/blog")) {
+        const baseName = removeFileExtension(p);
+        const extension = getFileExtension(p);
+
+        if (extension === "md") {
+            const mdContent = readFileFromPath(`src/blog/${p}`);
+            const htmlContent = parseAsMd(mdContent);
+            const outputPath = path.join(outBlogsDir, `${baseName}.html`);
+            fs.writeFileSync(outputPath, htmlContent);
+            console.log(`Generated ${outputPath}`);
+        } else if (extension === "webp") {
+            const srcPath = `src/blog/${p}`;
+            const destPath = path.join(outBlogsDir, p);
+            fs.copyFileSync(srcPath, destPath);
+            console.log(`Copied ${srcPath} to ${destPath}`);
+        }
+    }
+
     console.log("Assets built.");
 }
     console.log("Building TypeScript declaration files...");
