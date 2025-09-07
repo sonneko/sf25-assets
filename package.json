@@ -16,5 +16,8 @@
     "js-yaml": "^4.1.0",
     "marked": "^16.2.1",
     "typescript": "^5.9.2"
+  },
+  "devDependencies": {
+    "json-schema-to-markdown": "^1.1.1"
   }
 }

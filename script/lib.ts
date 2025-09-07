@@ -55,16 +55,19 @@ export function parseAsYaml(content: string): unknown {
 }
 
 export function parseAsMd(content: string): string {
-    try {
+    // try {
+
+    console.log(DOMPurify.sanitize)
+
         const options: MarkedOptions = {};
         const dangerousResultHtml = marked(content, options);
         const cleanResultHtml = DOMPurify.sanitize(dangerousResultHtml);
         const escapedHtml = escapeHtml(cleanResultHtml);
         return escapedHtml;
-    } catch (err) {
-        console.error(`failed to parse MarkDown: ${err}`);
-        process.exit(1);
-    }
+    // } catch (err) {
+    //     console.error(`failed to parse MarkDown: ${err}`);
+    //     process.exit(1);
+    // }
 }
 
 export const validates = Object.fromEntries(

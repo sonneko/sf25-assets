@@ -1,0 +1,24 @@
+[
+  {
+    "id": "class-001",
+    "name": "Sample Booth 1",
+    "description": "This is a description for sa",
+    "category": "categoryA",
+    "locate": "Hall A",
+    "group": "Group12",
+    "locateId": "G4",
+    "tag": [],
+    "keywords": []
+  },
+  {
+    "id": "class-4",
+    "name": "Sample Booth 2",
+    "description": "This is a description for",
+    "category": "categoryB",
+    "locate": "Hall B",
+    "group": "32d",
+    "locateId": "G1",
+    "tag": [],
+    "keywords": []
+  }
+]

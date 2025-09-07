@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { readFileFromPath, parseAsYaml, removeFileExtension, parseAsMd, getAllFilesInDirAsPath, getFileExtension } from "./lib.js";
+import jsonSchemaToMarkdown from "json-schema-to-markdown";
 
 function generateTsInterface(schemaName: string, schema: any, isRoot = true): string {
     let tsInterface = `export interface ${schemaName} ${isRoot ? '' : 'extends Record<string, unknown> '} {\n`;
@@ -55,7 +56,49 @@ function getTypeFromSchema(propSchema: any): string {
 }
 
 export function buildDocs() {
+    console.log("Building documentation...");
 
+    const schemasDir = "schemas";
+    const outDocsDir = "out/docs";
+    fs.mkdirSync(outDocsDir, { recursive: true });
+
+    // Process source schemas
+    const sourceSchemasPath = path.join(schemasDir, "source");
+    const sourceFiles = fs.readdirSync(sourceSchemasPath);
+
+    for (const file of sourceFiles) {
+        if (file.endsWith(".schema.yaml")) {
+            const schemaPath = path.join(sourceSchemasPath, file);
+            const schemaContent = readFileFromPath(schemaPath);
+            const parsedSchema = parseAsYaml(schemaContent);
+            const schemaName = removeFileExtension(file).replace(".schema", "");
+            
+            const markdown = jsonSchemaToMarkdown(parsedSchema as object);
+            const outputPath = path.join(outDocsDir, `${schemaName}.md`);
+            fs.writeFileSync(outputPath, markdown);
+            console.log(`Generated ${outputPath}`);
+        }
+    }
+
+    // Process output schemas
+    const outputSchemasPath = path.join(schemasDir, "output");
+    const outputFiles = fs.readdirSync(outputSchemasPath);
+
+    for (const file of outputFiles) {
+        if (file.endsWith(".schema.yaml")) {
+            const schemaPath = path.join(outputSchemasPath, file);
+            const schemaContent = readFileFromPath(schemaPath);
+            const parsedSchema = parseAsYaml(schemaContent);
+            const schemaName = removeFileExtension(file).replace(".schema", "");
+            
+            const markdown = jsonSchemaToMarkdown(parsedSchema as object);
+            const outputPath = path.join(outDocsDir, `${schemaName}.md`);
+            fs.writeFileSync(outputPath, markdown);
+            console.log(`Generated ${outputPath}`);
+        }
+    }
+
+    console.log("Documentation built.");
 }
 
 export function buildAssets() {

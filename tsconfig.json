@@ -20,7 +20,8 @@
     }
   },
   "include": [
-    "script/**/*"
+    "script/**/*",
+    "types/**/*",
   ],
   "exclude": [
     "node_modules"
