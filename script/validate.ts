@@ -33,6 +33,37 @@ export function validateSource() {
             }
         }
     }
+
+    // Validate blog source files
+    const blogPaths = getAllFilesInDirAsPath("src/blog");
+    for (const path of blogPaths) {
+        const extension = getFileExtension(path);
+        const baseName = removeFileExtension(path);
+
+        if (extension === "yaml") {
+            const fileContent = readFileFromPath("src/blog/" + path);
+            const parsedContent = parseAsYaml(fileContent);
+            
+            // Validate YAML file against schema
+            const isValid = validates.sourceBlog(parsedContent);
+            if (!isValid) {
+                console.error(`Failed to validate src/blog/${path}:`);
+                console.error(validates.sourceBlog.errors);
+                process.exit(1);
+            }
+            console.log(`Successfully validated src/blog/${path}`);
+
+            // Assert existence of corresponding Markdown file
+            const mdPath = `src/blog/${baseName}.md`;
+            try {
+                fs.accessSync(mdPath);
+                console.log(`Found corresponding Markdown file: ${mdPath}`);
+            } catch (error) {
+                console.error(`Error: Missing Markdown file for src/blog/${path}: ${mdPath}`);
+                process.exit(1);
+            }
+        }
+    }
     console.log("Source validation complete.");
 }
 
