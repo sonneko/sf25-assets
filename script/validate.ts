@@ -64,6 +64,26 @@ export function validateSource() {
             }
         }
     }
+
+    // Validate news source files
+    const newsPaths = getAllFilesInDirAsPath("src/news");
+    for (const path of newsPaths) {
+        const extension = getFileExtension(path);
+
+        if (extension === "yaml") {
+            const fileContent = readFileFromPath("src/news/" + path);
+            const parsedContent = parseAsYaml(fileContent);
+            
+            // Validate YAML file against schema
+            const isValid = validates.sourceNews(parsedContent);
+            if (!isValid) {
+                console.error(`Failed to validate src/news/${path}:`);
+                console.error(validates.sourceNews.errors);
+                process.exit(1);
+            }
+            console.log(`Successfully validated src/news/${path}`);
+        }
+    }
     console.log("Source validation complete.");
 }
 
