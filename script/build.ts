@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { readFileFromPath, parseAsYaml, removeFileExtension } from "./lib.js";
+import { readFileFromPath, parseAsYaml, removeFileExtension, parseAsMd, getAllFilesInDirAsPath } from "./lib.js";
 
 function generateTsInterface(schemaName: string, schema: any, isRoot = true): string {
     let tsInterface = `export interface ${schemaName} ${isRoot ? '' : 'extends Record<string, unknown> '} {\n`;
@@ -59,10 +59,82 @@ export function buildDocs() {
 }
 
 export function buildAssets() {
+    console.log("Building assets...");
 
+    const outDir = "out";
+    fs.mkdirSync(outDir, { recursive: true });
+
+    const allBooths: any[] = [];
+    const allBlogs: any[] = [];
+    const allNews: any[] = [];
+    const allLostItems: any[] = [];
+    let timeTable: any = {};
+    let config: any = {};
+
+    // Read and process booth data
+    const boothPaths = getAllFilesInDirAsPath("src/booth");
+    for (const p of boothPaths) {
+        if (getFileExtension(p) === "yaml") {
+            const content = readFileFromPath(`src/booth/${p}`);
+            const parsed = parseAsYaml(content);
+            allBooths.push(parsed);
+        }
+    }
+
+    // Read and process blog data
+    const blogPaths = getAllFilesInDirAsPath("src/blog");
+    for (const p of blogPaths) {
+        if (getFileExtension(p) === "yaml") {
+            const content = readFileFromPath(`src/blog/${p}`);
+            const parsed = parseAsYaml(content);
+            allBlogs.push(parsed);
+        }
+    }
+
+    // Read and process news data
+    const newsPaths = getAllFilesInDirAsPath("src/news");
+    for (const p of newsPaths) {
+        if (getFileExtension(p) === "yaml") {
+            const content = readFileFromPath(`src/news/${p}`);
+            const parsed = parseAsYaml(content);
+            allNews.push(parsed);
+        }
+    }
+
+    // Read and process lostItems data
+    const lostItemPaths = getAllFilesInDirAsPath("src/lostItems");
+    for (const p of lostItemPaths) {
+        if (getFileExtension(p) === "yaml") {
+            const content = readFileFromPath(`src/lostItems/${p}`);
+            const parsed = parseAsYaml(content);
+            allLostItems.push(parsed);
+        }
+    }
+
+    // Read timeTable.yaml
+    timeTable = parseAsYaml(readFileFromPath("src/timeTable.yaml"));
+
+    // Read config.yaml
+    config = parseAsYaml(readFileFromPath("src/config.yaml"));
+
+    // Generate index.json
+    const indexJson = {
+        booths: allBooths.map(b => ({ id: b.id, name: b.name, description: b.description })),
+        blogs: allBlogs.map(b => ({ id: b.id, title: b.title, date: b.date })),
+        news: allNews.map(n => ({ id: n.id, title: n.title, date: n.date })),
+        lostItems: allLostItems.map(li => ({ id: li.id, name: li.name, date: li.date })),
+        timeTable: timeTable,
+        config: config,
+    };
+    fs.writeFileSync(path.join(outDir, "index.json"), JSON.stringify(indexJson, null, 2));
+    console.log(`Generated ${path.join(outDir, "index.json")}`);
+
+    // Generate booth.json (assuming it's a list of all booth details)
+    fs.writeFileSync(path.join(outDir, "booth.json"), JSON.stringify(allBooths, null, 2));
+    console.log(`Generated ${path.join(outDir, "booth.json")}`);
+
+    console.log("Assets built.");
 }
-
-export function buildTypeDeclarationFile() {
     console.log("Building TypeScript declaration files...");
 
     const schemasDir = "schemas";
