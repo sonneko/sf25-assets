@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
+$schema: "http://json-schema.org/draft-07/schema#"
+
+title: "Booth Data"
+description: "企画の情報をまとめた"
+type: "object"
+properties:
+  booths:
+    type: "array"
+    description: "企画の一覧データ。フロントエンドのリスト表示などに利用されます。"
+    items:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          description: "企画のID。"
+        name:
+          type: "string"
+          description: "企画名。"
+        group:
+          type: "string"
+          description: "団体名。"
+        description:
+          type: "string"
+          description: "企画の簡単な紹介。"
+        locateId:
+          type: "string"
+          description: "企画場所のID。"
+        tag:
+          type: "array"
+          description: "企画のタグ。"
+          items:
+            type: "string"
+            enum: ["game", "exhibition", "food", "band", "cm", "free", "drink", "inside", "outside", "student", "big", "teacher", "club", "class", "voluntary"]
+        keywords:
+          type: "array"
+          description: "検索用のキーワードの配列"
+          items:
+            type: "string"
+required:
+- booths

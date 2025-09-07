@@ -1,50 +1,89 @@
 # yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
 $schema: "http://json-schema.org/draft-07/schema#"
-$id: "https://seikosf25.jp/schemas/output/index.schema.yaml"
+
 title: "Index Data"
 description: "検索インデックスや企画・ブログの概要など、フロントエンドの初期表示に必要な軽量データを集約したスキーマ。"
 type: "object"
 properties:
-  searchIndex:
+  news:
     type: "array"
-    description: "フロントエンドでの検索機能に使用されるインデックスデータの配列。"
+    description: "Newsの一覧"
+    items:
+      type: "object"
+      properties:
+        timestamp:
+          description: "配信日時"
+          type: "string"
+          format: "date-time"
+        title:
+          description: "Newsのタイトル"
+          type: "string"
+        content:
+          description: "Newsのコンテンツ"
+          type: "string"
+  blogs:
+    type: "array"
+    description: "ブログの一覧"
+    items:
+      type: "object"
+      properties:
+        id:
+          description: "ブログID"
+          type: "string"
+        title:
+          description: "ブログのタイトル"
+          type: "string"
+        author:
+          description: "執筆者ID"
+          type: "string"
+        timestamp:
+          description: "配信日時"
+          type: "string"
+          format: "date-time"
+        tags:
+          description: "記事についているタグ"
+          type: "string"
+          enum: ["after", "before", "interview", "student", "teacher", "infomation"]
+  timeTable:
+    type: "array"
+    description: "タイムテーブル（講堂以外も含む）"
     items:
       type: "object"
       properties:
         id:
           type: "string"
-          description: "企画やブログを一意に識別するID。"
-        keywords:
-          type: "array"
-          description: "検索対象となるキーワードの配列。"
-          items:
-            type: "string"
-  booths:
+          description: "関係企画の企画ID"
+        title:
+          type: "string"
+          description: "表示するイベント名"
+        start:
+          type: "string"
+          format: "date-time"
+          description: "始まる時間"
+        end:
+          type: "string"
+          format: "date-time"
+          description: "終わる時間"
+  lostItems:
     type: "array"
-    description: "企画の一覧データ。フロントエンドのリスト表示などに利用されます。"
+    description: "落とし物"
     items:
       type: "object"
       properties:
-        id:
-          type: "string"
-          description: "企画のID。"
         name:
+          description: "落とし物の名前（「財布」など）"
           type: "string"
-          description: "企画名。"
-        group:
+        placement:
+          description: "場所"
           type: "string"
-          description: "団体名。"
-        description:
+        id:
+          description: "落とし物ID"
           type: "string"
-          description: "企画の簡単な紹介。"
-        locateId:
+        content:
+          description: "落とし物の詳しい説明"
           type: "string"
-          description: "企画場所のID。"
-        tag:
-          type: "array"
-          description: "企画のタグ。"
-          items:
-            type: "string"
 required:
-  - searchIndex
-  - booths
+  - news
+  - blogs
+  - timeTable
+  - lostItems

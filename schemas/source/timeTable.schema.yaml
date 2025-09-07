@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
 $schema: "http://json-schema.org/draft-07/schema#"
-$id: "https://seikosf25.jp/schemas/output/timetable.schema.yaml"
+
 title: "Timetable"
 description: "タイムテーブルの情報を定義するスキーマ。"
 type: "object"
@@ -17,9 +17,12 @@ properties:
         title:
           type: "string"
           description: "イベントのタイトル。"
-        time:
+        start:
           type: "string"
-          description: "イベントの開始時間と終了時間。例: '10:00 - 11:00'"
+          format: "date-time"
+        end:
+          type: "string"
+          format: "date-time"
         boothId:
           type: "string"
           description: "関連する企画のID。"

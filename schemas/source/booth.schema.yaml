@@ -122,8 +122,7 @@ properties:
     description: "検索インデックス作成のためのキーワードの配列。"
     items:
       type: "string"
-    uniqueItems: true # Prevents duplicate keywords in the array.
-    minItems: 1 # At least one keyword should be provided for search indexing.
+    uniqueItems: true
 
 required:
   - id
