@@ -133,6 +133,28 @@ export function buildAssets() {
     fs.writeFileSync(path.join(outDir, "booth.json"), JSON.stringify(allBooths, null, 2));
     console.log(`Generated ${path.join(outDir, "booth.json")}`);
 
+    // Generate individual booth pages and copy images
+    const outBoothsDir = path.join(outDir, "booths");
+    fs.mkdirSync(outBoothsDir, { recursive: true });
+
+    for (const p of getAllFilesInDirAsPath("src/booth")) {
+        const baseName = removeFileExtension(p);
+        const extension = getFileExtension(p);
+
+        if (extension === "md") {
+            const mdContent = readFileFromPath(`src/booth/${p}`);
+            const htmlContent = parseAsMd(mdContent);
+            const outputPath = path.join(outBoothsDir, `${baseName}.html`);
+            fs.writeFileSync(outputPath, htmlContent);
+            console.log(`Generated ${outputPath}`);
+        } else if (extension === "webp") {
+            const srcPath = `src/booth/${p}`;
+            const destPath = path.join(outBoothsDir, p);
+            fs.copyFileSync(srcPath, destPath);
+            console.log(`Copied ${srcPath} to ${destPath}`);
+        }
+    }
+
     console.log("Assets built.");
 }
     console.log("Building TypeScript declaration files...");
