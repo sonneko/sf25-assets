@@ -3,7 +3,7 @@ import yaml from "js-yaml";
 import { marked, MarkedOptions } from "marked";
 import createDOMPurify from 'dompurify';
 import Ajv from "ajv";
-import { JSDOM } from "jsdom";
+import { JSDOM, Window } from "jsdom";
 
 const ajv = new Ajv.default();
 
@@ -55,7 +55,7 @@ export function parseAsYaml(content: string): unknown {
 export function parseAsMd(content: string): string {
     // try {
     const window = new JSDOM("").window;
-    const DOMPurify = createDOMPurify(window)
+    const DOMPurify = createDOMPurify(window as unknown as Window)
 
         const options: MarkedOptions = {};
         const dangerousResultHtml = marked(content, options);
