@@ -55,7 +55,7 @@ export function parseAsYaml(content: string): unknown {
 export function parseAsMd(content: string): string {
     // try {
     const window = new JSDOM("").window;
-    const DONPurify = createDomPurify(window)
+    const DOMPurify = createDOMPurify(window)
 
         const options: MarkedOptions = {};
         const dangerousResultHtml = marked(content, options);
