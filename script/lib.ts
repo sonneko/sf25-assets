@@ -1,9 +1,9 @@
 import fs from "fs";
 import yaml from "js-yaml";
 import { marked, MarkedOptions } from "marked";
-import createDOMPurify from 'dompurify';
+import createDOMPurify, { WindowLike } from 'dompurify';
 import Ajv from "ajv";
-import { JSDOM, Window } from "jsdom";
+import { JSDOM, type DOMWindow } from "jsdom";
 
 const ajv = new Ajv.default();
 
@@ -53,19 +53,19 @@ export function parseAsYaml(content: string): unknown {
 }
 
 export function parseAsMd(content: string): string {
-    // try {
-    const window = new JSDOM("").window;
-    const DOMPurify = createDOMPurify(window as unknown as Window)
-
-        const options: MarkedOptions = {};
-        const dangerousResultHtml = marked(content, options);
+    try {
+        const window = new JSDOM("").window;
+        const DOMPurify = createDOMPurify(window as WindowLike);
+        const dangerousResultHtml: string = marked(content, {
+            async: false
+        });
         const cleanResultHtml = DOMPurify.sanitize(dangerousResultHtml);
         const escapedHtml = escapeHtml(cleanResultHtml);
         return escapedHtml;
-    // } catch (err) {
-    //     console.error(`failed to parse MarkDown: ${err}`);
-    //     process.exit(1);
-    // }
+    } catch (err) {
+        console.error(`failed to parse MarkDown: ${err}`);
+        process.exit(1);
+    }
 }
 
 export const validates = Object.fromEntries(
