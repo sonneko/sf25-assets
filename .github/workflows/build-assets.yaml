@@ -46,11 +46,16 @@ jobs:
       - name: Add build artifacts
         run: |
           rm -rf ./*
-          mv dist/* .
-          rm -rf out/ 
-          echo 'node_modules/' >> .gitignore
-          echo 'src/' >> .gitignore
-          echo 'package.json' >> .gitignore
+          echo 'src' >> .gitignore
+          echo '.github' >> .gitignore
+          echo 'schemas' >> .gitignore
+          echo 'script' >> .gitignore
+          echo 'types' >> .gitignore
+          echo '.node-version' >> .gitignore
+          echo 'CNAME' >> .gitignore
+          echo 'LOGS.md' >> .gitignore
+          echo 'NOTES.md' >> .gitignore
+          echo 'robots.txt' >> .gitignore
           echo 'package-lock.json' >> .gitignore
           echo 'tsconfig.json' >> .gitignore
 
