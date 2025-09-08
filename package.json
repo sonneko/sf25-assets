@@ -10,6 +10,7 @@
     "@types/ajv": "^1.0.4",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^24.3.1",
+    "@types/jsdom": "^21.1.7",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "dompurify": "^3.2.6",
