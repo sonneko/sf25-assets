@@ -45,12 +45,12 @@ jobs:
 
       - name: Add build artifacts
         run: |
-          mkdir -p /temp/cleanup_temp
-          mv "package.json" /temp/cleanup_temp/
-          mv "dist" /temp/cleanup_temp/
+          mkdir -p $HOME/cleanup_temp
+          mv "package.json" $HOME/cleanup_temp
+          mv "dist" $HOME/cleanup_temp
           rm ./* .* -rf
-          mv /temp/cleanup_temp/package.json ./
-          mv /temp/cleanup_temp/dist ./
+          mv $HOME/cleanup_temp/package.json ./
+          mv $HOME/cleanup_temp/dist ./
 
       - name: Commit and push to lib branch
         run: |
