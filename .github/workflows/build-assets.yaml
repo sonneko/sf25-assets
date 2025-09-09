@@ -52,7 +52,7 @@ jobs:
           rm ./* .* -rf
           mv $HOME/cleanup_temp/package.json ./
           mv $HOME/cleanup_temp/dist ./
-          m $HOME/cleanup_temp/.git ./
+          mv $HOME/cleanup_temp/.git ./
 
       - name: Commit and push to lib branch
         run: |
