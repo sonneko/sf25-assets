@@ -45,19 +45,14 @@ jobs:
 
       - name: Add build artifacts
         run: |
-          rm -rf ./*
-          echo 'src' >> .gitignore
-          echo '.github' >> .gitignore
-          echo 'schemas' >> .gitignore
-          echo 'script' >> .gitignore
-          echo 'types' >> .gitignore
-          echo '.node-version' >> .gitignore
-          echo 'CNAME' >> .gitignore
-          echo 'LOGS.md' >> .gitignore
-          echo 'NOTES.md' >> .gitignore
-          echo 'robots.txt' >> .gitignore
-          echo 'package-lock.json' >> .gitignore
-          echo 'tsconfig.json' >> .gitignore
+          mkdir -p $HOME/cleanup_temp
+          mv "package.json" $HOME/cleanup_temp
+          mv "dist" $HOME/cleanup_temp
+          mv ".git" $HOME/cleanup_temp
+          rm ./* .* -rf
+          mv $HOME/cleanup_temp/package.json ./
+          mv $HOME/cleanup_temp/dist ./
+          mv $HOME/cleanup_temp/.git ./
 
       - name: Commit and push to lib branch
         run: |
