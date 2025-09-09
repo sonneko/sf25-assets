@@ -45,18 +45,8 @@ jobs:
 
       - name: Add build artifacts
         run: |
-          echo 'src' >> .gitignore
-          echo '.github' >> .gitignore
-          echo 'schemas' >> .gitignore
-          echo 'script' >> .gitignore
-          echo 'types' >> .gitignore
-          echo '.node-version' >> .gitignore
-          echo 'CNAME' >> .gitignore
-          echo 'LOGS.md' >> .gitignore
-          echo 'NOTES.md' >> .gitignore
-          echo 'robots.txt' >> .gitignore
-          echo 'package-lock.json' >> .gitignore
-          echo 'tsconfig.json' >> .gitignore
+          shopt -s dotglob
+          rm -rf !("dist"|"package.json"|"package-lock.json")
 
       - name: Commit and push to lib branch
         run: |
