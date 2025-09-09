@@ -45,7 +45,6 @@ jobs:
 
       - name: Add build artifacts
         run: |
-          rm -rf ./*
           echo 'src' >> .gitignore
           echo '.github' >> .gitignore
           echo 'schemas' >> .gitignore
