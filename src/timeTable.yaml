@@ -1,9 +1,0 @@
-
-  - id: event001
-    name: Opening Ceremony
-    time: 10:00
-    location: Main Stage
-  - id: event002
-    name: Keynote Speech
-    time: 11:00
-    location: Main Stage
