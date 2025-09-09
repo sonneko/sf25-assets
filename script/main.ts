@@ -1,12 +1,12 @@
-import {validateSource, validateOutput } from "./validate.js";
+import { validateSource, validateOutput } from "./validate.js";
 import { buildAssets, buildDocs, buildTypeDeclarationFile } from "./build.js";
 
-function main() {
+async function main() {
     validateSource();
     buildAssets();
     validateOutput();
     buildDocs();
-    buildTypeDeclarationFile();
+    await buildTypeDeclarationFile();
 }
 
 main();

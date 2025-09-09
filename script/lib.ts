@@ -52,7 +52,7 @@ export function parseAsYaml(content: string): unknown {
     }
 }
 
-export function parseAsMd(content: string): string {
+export function parseAsMdAndEscape(content: string): string {
     try {
         const window = new JSDOM("").window;
         const DOMPurify = createDOMPurify(window as WindowLike);
@@ -62,6 +62,21 @@ export function parseAsMd(content: string): string {
         const cleanResultHtml = DOMPurify.sanitize(dangerousResultHtml);
         const escapedHtml = escapeHtml(cleanResultHtml);
         return escapedHtml;
+    } catch (err) {
+        console.error(`failed to parse MarkDown: ${err}`);
+        process.exit(1);
+    }
+}
+
+export function parseAsMd(content: string): string {
+    try {
+        const window = new JSDOM("").window;
+        const DOMPurify = createDOMPurify(window as WindowLike);
+        const dangerousResultHtml: string = marked(content, {
+            async: false
+        });
+        const cleanResultHtml = DOMPurify.sanitize(dangerousResultHtml);
+        return cleanResultHtml;
     } catch (err) {
         console.error(`failed to parse MarkDown: ${err}`);
         process.exit(1);

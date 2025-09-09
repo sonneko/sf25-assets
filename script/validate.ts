@@ -1,5 +1,20 @@
 import { getAllFilesInDirAsPath, readFileFromPath, validates, getFileExtension, removeFileExtension, parseAsYaml, assertFileExistence } from "./lib.js";
-import fs from "fs";
+import { ValidateFunction } from "ajv";
+
+function validate(path: string, validateFn: ValidateFunction): void {
+    const fileContent = readFileFromPath(path);
+    const parsedContent = parseAsYaml(fileContent);
+
+    // Validate YAML file against schema
+    const isValid = validateFn(parsedContent);
+    if (!isValid) {
+        console.error(`Failed to validate ${path}:`);
+        console.error(validateFn.errors);
+        process.exit(1);
+    }
+    console.log(`Successfully validated ${path}`);
+}
+
 
 export function validateSource() {
     console.log("Validating source files...");
@@ -11,17 +26,7 @@ export function validateSource() {
         const baseName = removeFileExtension(path);
 
         if (extension === "yaml") {
-            const fileContent = readFileFromPath("src/booth/" + path);
-            const parsedContent = parseAsYaml(fileContent);
-            
-            // Validate YAML file against schema
-            const isValid = validates.sourceBooth(parsedContent);
-            if (!isValid) {
-                console.error(`Failed to validate src/booth/${path}:`);
-                console.error(validates.sourceBooth.errors);
-                process.exit(1);
-            }
-            console.log(`Successfully validated src/booth/${path}`);
+            validate(`src/booth/${path}`, validates.sourceBooth);
 
             // Assert existence of corresponding Markdown file
             const mdPath = `src/booth/${baseName}.md`;
@@ -36,17 +41,7 @@ export function validateSource() {
         const baseName = removeFileExtension(path);
 
         if (extension === "yaml") {
-            const fileContent = readFileFromPath("src/blog/" + path);
-            const parsedContent = parseAsYaml(fileContent);
-            
-            // Validate YAML file against schema
-            const isValid = validates.sourceBlog(parsedContent);
-            if (!isValid) {
-                console.error(`Failed to validate src/blog/${path}:`);
-                console.error(validates.sourceBlog.errors);
-                process.exit(1);
-            }
-            console.log(`Successfully validated src/blog/${path}`);
+            validate(`src/blog/${path}`, validates.sourceBlog);
 
             // Assert existence of corresponding Markdown file
             const mdPath = `src/blog/${baseName}.md`;
@@ -60,17 +55,7 @@ export function validateSource() {
         const extension = getFileExtension(path);
 
         if (extension === "yaml") {
-            const fileContent = readFileFromPath("src/news/" + path);
-            const parsedContent = parseAsYaml(fileContent);
-            
-            // Validate YAML file against schema
-            const isValid = validates.sourceNews(parsedContent);
-            if (!isValid) {
-                console.error(`Failed to validate src/news/${path}:`);
-                console.error(validates.sourceNews.errors);
-                process.exit(1);
-            }
-            console.log(`Successfully validated src/news/${path}`);
+            validate(`src/news/${path}`, validates.sourceNews);
         }
     }
 
@@ -81,17 +66,7 @@ export function validateSource() {
         const baseName = removeFileExtension(path);
 
         if (extension === "yaml") {
-            const fileContent = readFileFromPath("src/lostItems/" + path);
-            const parsedContent = parseAsYaml(fileContent);
-            
-            // Validate YAML file against schema
-            const isValid = validates.sourceLostItem(parsedContent);
-            if (!isValid) {
-                console.error(`Failed to validate src/lostItems/${path}:`);
-                console.error(validates.sourceLostItem.errors);
-                process.exit(1);
-            }
-            console.log(`Successfully validated src/lostItems/${path}`);
+            validate(`src/lostItems/${path}`, validates.sourceLostItem)
 
             // Assert existence of corresponding WebP image file
             const webpPath = `src/lostItems/${baseName}.webp`;
@@ -100,24 +75,10 @@ export function validateSource() {
     }
 
     // Validate src/timeTable.yaml
-    const timeTableContent = readFileFromPath("src/timeTable.yaml");
-    const parsedTimeTable = parseAsYaml(timeTableContent);
-    if (!validates.sourceTimeTable(parsedTimeTable)) {
-        console.error(`Failed to validate src/timeTable.yaml:`);
-        console.error(validates.sourceTimeTable.errors);
-        process.exit(1);
-    }
-    console.log(`Successfully validated src/timeTable.yaml`);
+    validate("src/timeTable.yaml", validates.sourceTimeTable);
 
     // Validate src/config.yaml
-    const configContent = readFileFromPath("src/config.yaml");
-    const parsedConfig = parseAsYaml(configContent);
-    if (!validates.sourceConfig(parsedConfig)) {
-        console.error(`Failed to validate src/config.yaml:`);
-        console.error(validates.sourceConfig.errors);
-        process.exit(1);
-    }
-    console.log(`Successfully validated src/config.yaml`);
+    validate("src/config.yaml", validates.sourceConfig)
 
     console.log("Source validation complete.");
 }
@@ -125,25 +86,22 @@ export function validateSource() {
 export function validateOutput() {
     console.log("Validating output files...");
 
-    // Validate out/index.json
-    const indexContent = readFileFromPath("out/index.json");
-    const parsedIndex = JSON.parse(indexContent);
-    if (!validates.outputIndex(parsedIndex)) {
-        console.error(`Failed to validate out/index.json:`);
-        console.error(validates.outputIndex.errors);
-        process.exit(1);
+    const validate = (path: string, validateFn: ValidateFunction) => {
+        const indexContent = readFileFromPath(path);
+        const parsedIndex = JSON.parse(indexContent);
+        if (!validateFn(parsedIndex)) {
+            console.error(`Failed to validate ${path}:`);
+            console.error(validateFn.errors);
+            process.exit(1);
+        }
+        console.log(`Successfully validated ${path}`);
     }
-    console.log(`Successfully validated out/index.json`);
 
-    // Validate out/booth.json
-    const boothJsonContent = readFileFromPath("out/booth.json");
-    const parsedBoothJson = JSON.parse(boothJsonContent);
-    if (!validates.outputBooth(parsedBoothJson)) {
-        console.error(`Failed to validate out/booth.json:`);
-        console.error(validates.outputBooth.errors);
-        process.exit(1);
-    }
-    console.log(`Successfully validated out/booth.json`);
+    // Validate out/index.json
+    validate("out/index.json", validates.outputIndex);
+
+    // Validate out/booth.json"
+    validate("out/booth.json", validates.outputBooth);
 
     // Validate existence of generated HTML and WebP files for booths
     const srcBoothPaths = getAllFilesInDirAsPath("src/booth");
