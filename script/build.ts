@@ -157,10 +157,10 @@ export function buildAssets() {
     // Generate index.json
     const indexJson = {
         booths: allBooths.map(b => ({ id: b.id, name: b.name, description: b.description })),
-        blogs: allBlogs.map(b => ({ id: b.id, title: b.title, date: b.date })),
-        news: allNews.map(n => ({ id: n.id, title: n.title, date: n.date })),
-        lostItems: allLostItems.map(li => ({ id: li.id, name: li.name, date: li.date })),
-        timeTable: timeTable,
+        blogs: allBlogs.map(b => ({ id: b.id, title: b.title, author: b.author, timestamp: b.date, tags: b.tags.length > 0 ? b.tags[0] : "" })),
+        news: allNews.map(n => ({ id: n.id, title: n.title, timestamp: n.timestamp })),
+        lostItems: allLostItems.map(li => ({ id: li.id, name: li.item, placement: li.found_at, content: li.description })),
+        timeTable: timeTable.map((event: any) => ({ id: event.id, title: event.title, start: event.start, end: event.end })),
         config: config,
     };
     fs.writeFileSync(path.join(outDir, "index.json"), JSON.stringify(indexJson, null, 2));
@@ -180,7 +180,7 @@ export function buildAssets() {
 
         if (extension === "md") {
             const mdContent = readFileFromPath(`src/booth/${p}`);
-            const htmlContent = parseAsMdAndEscape(mdContent);
+            const htmlContent = parseAsMd(mdContent);
             const outputPath = path.join(outBoothsDir, `${baseName}.html`);
             fs.writeFileSync(outputPath, htmlContent);
             console.log(`Generated ${outputPath}`);
@@ -202,13 +202,27 @@ export function buildAssets() {
 
         if (extension === "md") {
             const mdContent = readFileFromPath(`src/blog/${p}`);
-            const htmlContent = parseAsMdAndEscape(mdContent);
+            const htmlContent = parseAsMd(mdContent);
             const outputPath = path.join(outBlogsDir, `${baseName}.html`);
             fs.writeFileSync(outputPath, htmlContent);
             console.log(`Generated ${outputPath}`);
         } else if (extension === "webp") {
             const srcPath = `src/blog/${p}`;
             const destPath = path.join(outBlogsDir, p);
+            fs.copyFileSync(srcPath, destPath);
+            console.log(`Copied ${srcPath} to ${destPath}`);
+        }
+    }
+
+    // Generate individual lostItem images
+    const outLostItemsDir = path.join(outDir, "lostItems");
+    fs.mkdirSync(outLostItemsDir, { recursive: true });
+
+    for (const p of getAllFilesInDirAsPath("src/lostItems")) {
+        const extension = getFileExtension(p);
+        if (extension === "webp") {
+            const srcPath = `src/lostItems/${p}`;
+            const destPath = path.join(outLostItemsDir, p);
             fs.copyFileSync(srcPath, destPath);
             console.log(`Copied ${srcPath} to ${destPath}`);
         }

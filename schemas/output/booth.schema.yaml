@@ -52,5 +52,11 @@ items:
       description: "検索用のキーワードの配列"
       items:
         type: "string"
-required:
-  - booths
+  required:
+    - id
+    - name
+    - group
+    - description
+    - locateId
+    - tag
+    - keywords
