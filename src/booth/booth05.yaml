@@ -1,0 +1,5 @@
+id: "booth05"
+name: "Mock Booth 5"
+description: "This is a mock description for booth 5."
+location: "West Hall"
+tags: ["mock", "games"]
