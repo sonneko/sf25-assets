@@ -45,8 +45,12 @@ jobs:
 
       - name: Add build artifacts
         run: |
-          shopt -s dotglob
-          rm -rf !("dist"|"package.json"|"package-lock.json")
+          mkdir -p /temp/cleanup_temp
+          mv "package.json" /temp/cleanup_temp/
+          mv "dist" /temp/cleanup_temp/
+          rm ./* .* -rf
+          mv /temp/cleanup_temp/package.json ./
+          mv /temp/cleanup_temp/dist ./
 
       - name: Commit and push to lib branch
         run: |
