@@ -1,62 +1,45 @@
 # yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
 $schema: "http://json-schema.org/draft-07/schema#"
-
-title: "Booth Data"
-description: "企画の情報をまとめた"
-
-type: "array"
-
-items:
-  type: "object"
-  properties:
-    id:
+$id: "https://assets.seikosf25.jp/schemas/output/booth.schema.yaml"
+title: "Processed Booth Information Schema"
+description: "処理された企画（ブース）の情報を定義するスキーマ。通常、フロントエンドでの表示用。"
+type: "object"
+properties:
+  id:
+    type: "string"
+    description: "企画を一意に識別できるID。"
+  name:
+    type: "string"
+    description: "企画の名前。"
+  group:
+    type: "string"
+    description: "団体名。"
+  shortDescription:
+    type: "string"
+    description: "簡単な1行紹介。"
+  locationId:
+    type: "string"
+    description: "企画場所ID。"
+  locationName:
+    type: "string"
+    description: "企画場所名。"
+  tags:
+    type: "array"
+    description: "企画の属性を示すタグの配列。"
+    items:
       type: "string"
-      description: "企画のID。"
-    name:
+  searchKeywords:
+    type: "array"
+    description: "検索用のキーワードの配列。"
+    items:
       type: "string"
-      description: "企画名。"
-    group:
-      type: "string"
-      description: "団体名。"
-    description:
-      type: "string"
-      description: "企画の簡単な紹介。"
-    locateId:
-      type: "string"
-      description: "企画場所のID。"
-    tag:
-      type: "array"
-      description: "企画のタグ。"
-      items:
-        type: "string"
-        enum:
-          [
-            "game",
-            "exhibition",
-            "food",
-            "band",
-            "cm",
-            "free",
-            "drink",
-            "inside",
-            "outside",
-            "student",
-            "big",
-            "teacher",
-            "club",
-            "class",
-            "voluntary",
-          ]
-    keywords:
-      type: "array"
-      description: "検索用のキーワードの配列"
-      items:
-        type: "string"
-  required:
-    - id
-    - name
-    - group
-    - description
-    - locateId
-    - tag
-    - keywords
+    uniqueItems: true
+required:
+  - id
+  - name
+  - group
+  - shortDescription
+  - locationId
+  - locationName
+  - tags
+  - searchKeywords

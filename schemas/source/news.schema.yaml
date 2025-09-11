@@ -1,10 +1,7 @@
 # yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
-# JSON Schema for news data.
-# This schema validates the structure and content of news information files.
-
 $schema: "http://json-schema.org/draft-07/schema#"
-$id: "https://seikosf25.jp/schemas/source/news.schema.yaml"
-title: "News"
+$id: "https://assets.seikosf25.jp/schemas/source/news.schema.yaml"
+title: "News Article Schema"
 description: "ニュース記事の情報を定義するスキーマ。"
 type: "object"
 properties:
@@ -16,7 +13,7 @@ properties:
     description: "ニュース記事の本文。"
   timestamp:
     type: "string"
-    description: "ニュース記事が公開された日時。ISO 8601形式（YYYY-MM-DDTHH:mm:ssZ）の文字列を期待します。"
+    description: "ニュース記事が公開された日時（ISO 8601形式）。例: '2023-10-27T12:30:00Z'"
 required:
   - title
   - content

@@ -1,5 +1,6 @@
+# yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
 $schema: "http://json-schema.org/draft-07/schema#"
-
-title: "Config"
-description: "schema for booth.yaml. This defines the structure for individual booth information files."
+$id: "https://assets.seikosf25.jp/schemas/source/config.schema.yaml"
+title: "Global Configuration Schema"
+description: "アプリケーション全体のグローバル設定を定義するスキーマ。"
 type: "object"

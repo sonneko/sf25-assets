@@ -1,85 +1,113 @@
 # yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
 $schema: "http://json-schema.org/draft-07/schema#"
-
-title: "Index Data"
-description: "検索インデックスや企画・ブログの概要など、フロントエンドの初期表示に必要な軽量データを集約したスキーマ。"
+$id: "https://assets.seikosf25.jp/schemas/output/index.schema.yaml"
+title: "Search Index and Overview Data"
+description: "検索インデックスや企画・ブログなどの概要情報を集約した、フロントエンドの初期表示に必要な軽量データスキーマ。"
 type: "object"
 properties:
   news:
     type: "array"
-    description: "Newsの一覧"
+    description: "新着情報の一覧"
     items:
       type: "object"
       properties:
+        id:
+          type: "string"
+          description: "新着情報の一意なID"
         timestamp:
           description: "配信日時"
           type: "string"
         title:
-          description: "Newsのタイトル"
+          description: "新着情報のタイトル"
           type: "string"
-        content:
-          description: "Newsのコンテンツ"
+        shortDescription:
+          description: "新着情報の簡単な紹介"
           type: "string"
+      required:
+        - id
+        - timestamp
+        - title
+        - shortDescription
   blogs:
     type: "array"
-    description: "ブログの一覧"
-    items:
-      type: "object"
-      properties:
-        id:
-          description: "ブログID"
-          type: "string"
-        title:
-          description: "ブログのタイトル"
-          type: "string"
-        author:
-          description: "執筆者ID"
-          type: "string"
-        timestamp:
-          description: "配信日時"
-          type: "string"
-        tags:
-          description: "記事についているタグ"
-          type: "string"
-          enum: ["after", "before", "interview", "student", "teacher", "infomation"]
-  timeTable:
-    type: "array"
-    description: "タイムテーブル（講堂以外も含む）"
+    description: "ブログ記事の概要一覧"
     items:
       type: "object"
       properties:
         id:
           type: "string"
-          description: "関係企画の企画ID"
+          description: "ブログ記事の一意なID"
         title:
+          description: "ブログ記事のタイトル"
           type: "string"
-          description: "表示するイベント名"
-        start:
+        shortDescription:
+          description: "ブログ記事の簡単な紹介"
           type: "string"
-          description: "始まる時間"
-        end:
-          type: "string"
-          description: "終わる時間"
-  lostItems:
+      required:
+        - id
+        - title
+        - shortDescription
+  booths:
     type: "array"
-    description: "落とし物"
+    description: "企画（ブース）の概要一覧"
     items:
       type: "object"
       properties:
+        id:
+          type: "string"
+          description: "企画の一意なID"
         name:
-          description: "落とし物の名前（「財布」など）"
           type: "string"
-        placement:
-          description: "場所"
+          description: "企画の名前"
+        group:
           type: "string"
+          description: "団体名"
+        shortDescription:
+          type: "string"
+          description: "企画の簡単な紹介"
+        locationId:
+          type: "string"
+          description: "企画場所ID"
+        locationName:
+          type: "string"
+          description: "企画場所名"
+        tags:
+          type: "array"
+          description: "企画の属性を示すタグの配列"
+          items:
+            type: "string"
+      required:
+        - id
+        - name
+        - group
+        - shortDescription
+        - locationId
+        - locationName
+        - tags
+  searchIndex:
+    type: "array"
+    description: "サイト内検索用のインデックスデータ"
+    items:
+      type: "object"
+      properties:
         id:
-          description: "落とし物ID"
           type: "string"
-        content:
-          description: "落とし物の詳しい説明"
+          description: "検索対象項目の一意なID (例: 企画ID, ブログID)"
+        category:
           type: "string"
+          description: "検索対象のカテゴリ (例: 'booth', 'blog', 'news')"
+        keywords:
+          type: "array"
+          description: "検索キーワードの配列"
+          items:
+            type: "string"
+          uniqueItems: true
+      required:
+        - id
+        - category
+        - keywords
 required:
   - news
   - blogs
-  - timeTable
-  - lostItems
+  - booths
+  - searchIndex

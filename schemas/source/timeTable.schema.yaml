@@ -1,8 +1,9 @@
 # yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
 $schema: "http://json-schema.org/draft-07/schema#"
+$id: "https://assets.seikosf25.jp/schemas/source/timeTable.schema.yaml"
 
-title: "Timetable"
-description: "タイムテーブルの情報を定義するスキーマ。"
+title: "Timetable Event List Schema"
+description: "タイムテーブルイベントのリストを定義するスキーマ。"
 
 type: "array"
 items:
@@ -10,16 +11,22 @@ items:
     properties:
       id:
         type: "string"
-        description: "タイムテーブルイベントのID。"
+        description: "タイムテーブルイベントのユニークなID。"
       title:
         type: "string"
         description: "イベントのタイトル。"
       start:
         type: "string"
+        description: "イベントの開始日時（ISO 8601形式）。例: '2023-10-27T10:00:00Z'"
       end:
         type: "string"
+        description: "イベントの終了日時（ISO 8601形式）。例: '2023-10-27T11:00:00Z'"
       boothId:
         type: "string"
         description: "関連する企画のID。"
-required:
-  - timetable
+    required:
+      - id
+      - title
+      - start
+      - end
+      - boothId

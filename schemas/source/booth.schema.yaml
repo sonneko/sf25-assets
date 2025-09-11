@@ -1,18 +1,14 @@
 # yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
-# JSON Schema for booth data.
-# This schema validates the structure and content of booth information files.
-
 $schema: "http://json-schema.org/draft-07/schema#"
-$id: "https://seikosf25.jp/schemas/source/booth.schema.yaml"
-title: "Booth"
-description: "schema for booth.yaml. This defines the structure for individual booth information files."
+$id: "https://assets.seikosf25.jp/schemas/source/booth.schema.yaml"
+title: "Booth Information Schema"
+description: "個別の企画（ブース）の情報を定義するスキーマ。"
 type: "object"
-
 properties:
   id:
     type: "string"
-    description: "企画を一意に判別できるID。修飾子と団体名を表す文字列で構成されます。"
-    pattern: "^(class|grade|club|volu)-[a-zA-Z0-9-]+" # Ensures the ID follows the specified format
+    description: "企画を一意に識別できるID。修飾子と団体名を表す文字列で構成されます（例: class-example）。"
+    pattern: "^(class|grade|club|volu)-[a-zA-Z0-9-]+"
   name:
     type: "string"
     description: "企画の名前（そのまま表示される）。"
@@ -24,10 +20,9 @@ properties:
     description: "簡単な1行紹介（20〜40文字程度）。改行は禁止されます。"
     minLength: 20
     maxLength: 40
-  locateId:
+  locationId:
     type: "string"
     description: "企画場所ID。特定の文字列リストに限定されます。"
-    # The enum is generated from the provided list in the documentation.
     enum:
       - "G"
       - "G1"
@@ -92,15 +87,14 @@ properties:
       - "Physics"
       - "P1"
       - "P2"
-  locate:
+  locationName:
     type: "string"
-    description: "企画場所名。`locateId`に対応する場所名です。"
-  tag:
+    description: "企画場所名。`locationId`に対応する場所名です。"
+  tags:
     type: "array"
     description: "企画の属性を示すタグの配列。"
     items:
       type: "string"
-      # The enum is generated from the provided list in the documentation.
       enum:
         - "game"
         - "exhibition"
@@ -123,13 +117,12 @@ properties:
     items:
       type: "string"
     uniqueItems: true
-
 required:
   - id
   - name
   - group
   - description
-  - locateId
-  - locate
-  - tag
+  - locationId
+  - locationName
+  - tags
   - keywords

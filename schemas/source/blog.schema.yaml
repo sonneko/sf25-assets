@@ -1,16 +1,13 @@
 # yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
-# JSON Schema for blog data.
-# This schema validates the structure and content of blog information files.
-
 $schema: "http://json-schema.org/draft-07/schema#"
-$id: "https://seikosf25.jp/schemas/source/blog.schema.yaml"
-title: "Blog"
+$id: "https://assets.seikosf25.jp/schemas/source/blog.schema.yaml"
+title: "Blog Article Schema"
 description: "ブログ記事の情報を定義するスキーマ。"
 type: "object"
 properties:
   id:
     type: "string"
-    description: "記事のID。"
+    description: "ブログ記事のユニークなID。"
   title:
     type: "string"
     description: "記事のタイトル。"
@@ -19,13 +16,12 @@ properties:
     description: "記事の著者。"
   date:
     type: "string"
-    description: "記事の日付。"
+    description: "記事の公開日付（YYYY-MM-DD形式）。例: '2023-10-27'"
   tags:
     type: "array"
     description: "記事のタグの配列。"
     items:
       type: "string"
-      description: "記事のタグ。"
       enum:
         - "after"
         - "before"

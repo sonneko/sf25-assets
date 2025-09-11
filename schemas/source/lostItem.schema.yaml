@@ -1,24 +1,24 @@
 # yaml-language-server: $schema=https://json-schema.org/draft/2020-12/schema
 $schema: "http://json-schema.org/draft-07/schema#"
-
-title: "LostAndFound"
+$id: "https://assets.seikosf25.jp/schemas/source/lostItem.schema.yaml"
+title: "Lost Item Schema"
 description: "落とし物の情報を定義するスキーマ。"
 type: "object"
 properties:
   id:
     type: "string"
     description: "落とし物データを一意に識別するID。"
-  item:
+  itemName:
     type: "string"
     description: "落とし物の品目。例: '黒い傘'、'紺色のタオル'。"
-  found_at:
+  foundLocation:
     type: "string"
     description: "落とし物が発見された場所。"
-  timestamp:
+  foundTimestamp:
     type: "string"
-    description: "落とし物が発見された日時。ISO 8601形式の文字列を期待します。"
+    description: "落とし物が発見された日時（ISO 8601形式）。例: '2023-10-27T15:00:00Z'"
 required:
   - id
-  - item
-  - found_at
-  - timestamp
+  - itemName
+  - foundLocation
+  - foundTimestamp
